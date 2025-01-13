@@ -1,0 +1,33 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Updated AGP version
+        classpath 'com.android.tools.build:gradle:8.2.1' // Make sure to update this to at least 8.2.1
+        // NOTE: Do not place your application dependencies here; they belong in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// If you're using Java 21 or above, downgrade to Java 17 (recommended for compatibility)
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
