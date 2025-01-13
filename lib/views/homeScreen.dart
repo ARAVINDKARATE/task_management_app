@@ -20,68 +20,65 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
 
-    return MaterialApp(
-      theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Task Manager'),
-          actions: [
-            Switch(
-              value: _isDarkMode,
-              onChanged: (value) {
-                toggle(value);
-              },
-            ),
-          ],
-        ),
-        body: ListView.builder(
-          itemCount: taskProvider.tasks.length,
-          itemBuilder: (context, index) {
-            final task = taskProvider.tasks[index];
-            final formattedDate = task.dueDate != null ? DateFormat('MMM dd, yyyy').format(task.dueDate!) : 'No Due Date';
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Task Manager'),
+        actions: [
+          Switch(
+            value: _isDarkMode,
+            onChanged: (value) {
+              toggle(value);
+            },
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: taskProvider.tasks.length,
+        itemBuilder: (context, index) {
+          final task = taskProvider.tasks[index];
+          final formattedDate = task.dueDate != null ? DateFormat('MMM dd, yyyy').format(task.dueDate!) : 'No Due Date';
 
-            return ListTile(
-              title: Text(
-                task.name,
-                style: TextStyle(
-                  decoration: task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
-                ),
+          return ListTile(
+            title: Text(
+              task.name,
+              style: TextStyle(
+                decoration: task.isCompleted ? TextDecoration.lineThrough : TextDecoration.none,
               ),
-              subtitle: Text('$formattedDate | ${task.priority}'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Checkbox(
-                    value: task.isCompleted,
-                    onChanged: (value) {
-                      task.isCompleted = value ?? false;
-                      taskProvider.updateTask(task);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => EditTaskScreen(task: task),
-                      ),
+            ),
+            subtitle: Text('$formattedDate | ${task.priority}'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Checkbox(
+                  value: task.isCompleted,
+                  onChanged: (value) {
+                    task.isCompleted = value ?? false;
+                    taskProvider.updateTask(task);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditTaskScreen(task: task),
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => taskProvider.deleteTask(task),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => AddTaskScreen()),
-          ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => taskProvider.deleteTask(task),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => AddTaskScreen()),
         ),
       ),
     );

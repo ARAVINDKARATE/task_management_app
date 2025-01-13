@@ -75,10 +75,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.primary,
+                child: Text(
+                  'Add Task',
                 ),
-                child: Text('Add Task'),
                 onPressed: () {
                   if (_formKey.currentState?.validate() == true) {
                     _formKey.currentState?.save();
